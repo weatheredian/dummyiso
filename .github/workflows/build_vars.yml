@@ -1,0 +1,82 @@
+name: Build Vars
+
+on:
+  workflow_call:
+    outputs:
+      ARCH:
+        value: 'x86_64'
+      BUILD_MATRIX:
+        value: '
+          {
+            "version": [
+              "41",
+              "42",
+              "43"
+            ],
+            "flatpaks": [
+              "false",
+              "flatpak_refs_dir",
+              "flatpak_refs"
+            ],
+            "image_repo": [
+              "ghcr.io/ublue-os",
+              "quay.io/fedora",
+              "quay.io/fedora-ostree-desktops"
+            ],
+            "include": [
+              {
+                "image_repo": "ghcr.io/ublue-os",
+                "image_name": "base-main",
+              },
+              {
+                "image_repo": "quay.io/fedora",
+                "image_name": "fedora-bootc"
+              },
+              {
+                "image_repo": "quay.io/fedora-ostree-desktops",
+                "image_name": "base-atomic"
+              }
+            ],
+            "exclude": [
+              {
+                "image_repo": "quay.io/fedora",
+                "flatpaks": "flatpak_refs_dir"
+              },
+              {
+                "image_repo": "quay.io/fedora",
+                "flatpaks": "flatpak_refs"
+              },
+              {
+                "image_repo": "quay.io/fedora-ostree-desktops",
+                "flatpaks": "flatpak_refs_dir"
+              },
+              {
+                "image_repo": "quay.io/fedora-ostree-desktops",
+                "flatpaks": "flatpak_refs"
+              },
+              {
+                "image_repo": "ghcr.io/ublue-os",
+                "version": "43"
+              }
+            ]
+          }'
+      VARIANT:
+        value: 'Server'
+      FLATPAK_REMOTE_REFS_DIR:
+        value: flatpak_refs
+      FLATPAK_REMOTE_REFS:
+        value: "app/org.mozilla.firefox/x86_64/stable app/org.videolan.VLC/x86_64/stable"
+      SECURE_BOOT_KEY_URL:
+        value: 'https://github.com/ublue-os/akmods/raw/main/certs/public_key.der'
+      ENROLLMENT_PASSWORD:
+        value: 'container-installer'
+      
+
+jobs:
+  load-vars:
+    name: Load Variables
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sucess
+        run:
+          echo "Vars loaded"
